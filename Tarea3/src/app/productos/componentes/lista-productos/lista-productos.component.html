@@ -1,0 +1,99 @@
+<!-- Button trigger modal -->
+<div class="text-right mx-2 my-2">
+    <button type="button" class="btn btn-primary mx-2" (click)="abrirModal(crearProductoModal)">
+        Crear Producto
+    </button>
+</div>
+
+<!-- Modal -->
+<ng-template #crearProductoModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Crear Producto</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.close('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <!-- <app-crear-producto (productoCreado)="cargarProductos()"></app-crear-producto> -->
+        <app-crear-producto></app-crear-producto>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Cross click')">Cerrar</button>
+    </div>
+</ng-template>
+
+
+<div *ngIf="loading; else mostrarProductos">
+    Cargando productos...
+</div>
+<ng-template #mostrarProductos>
+    <div class="table-responsive">
+        <table class="table table-sm table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Imagen</th>
+                    <th scope="col">Título</th>
+                    <th scope="col">Categoría</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let producto of productos">
+                    <th>{{producto.id}}</th>
+                    <td>
+                        <div style="width: 48px; height: 48px;">
+                            <img [src]="producto.image" width="48px" height="48px">
+                        </div>
+                    </td>
+                    <td>{{producto.title}}</td>
+                    <td>{{producto.category}}</td>
+                    <td>${{producto.price}}</td>
+                    <td>
+                        <!-- TODO: TAREA 3 -->
+                        <!-- Plazo: Lunes 25 de Octubre hasta las 20:00 -->
+                        <!-- El componente editar producto debe estar contenido en un módulo que se llame editar-producto.module.ts (módulo propio) -->
+                        <!-- Abrir un modal similar al de crear producto, para editar ese producto -->
+                        <!-- Se debe poder editar: -->
+                        <!-- El título -->
+                        <!-- La descripción -->
+                        <!-- La Categoría -->
+                        <!-- La Imagen -->
+                        <!-- El precio -->
+                        <!-- El rating count -->
+                        <!-- El rating rate | select de 1 - 5, (1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5 y 5)-->
+                        <!-- --- Al abrir un producto, por ejemplo "Mens Casual Slim Fit", 
+                            en el input del titulo debiese aparecer "Mens Casual Slim Fit", y así con los otros inputs -->
+                        <button type="button" (click)="abrirModal(editarProductoModal)" class="btn btn-success mx-2">
+                            Editar
+                        </button>
+
+                        <!-- ////////////// -->
+
+                        <ng-template #editarProductoModal let-modal>
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="modal-basic-title">Editar Producto</h4>
+                                <button type="button" class="close" aria-label="Close" (click)="modal.close('Cross click')">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- <app-crear-producto (productoCreado)="cargarProductos()"></app-crear-producto> -->
+                                <app-editar-producto [productos]="productos" (productoClickeado)="asignarProductoClickeado($event)"></app-editar-producto>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-dark" (click)="modal.close('Cross click')">Cerrar</button>
+                            </div>
+                        </ng-template>
+
+                        <!-- ///////////// -->
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</ng-template>
+
+<app-lista-categorias></app-lista-categorias>

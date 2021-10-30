@@ -1,0 +1,113 @@
+<form [formGroup]="form">
+    <!-- Título Producto -->
+    <div>
+        <label class="form-label">Título Producto</label>
+        <input type="text" value="{{productos}}" class="form-control" placeholder="titulo producto" formControlName="title">
+    </div>
+    <div class="text-danger" *ngIf="form.get('title')!.dirty && form.get('title')!.errors">
+        Campo requerido, no puede superar los 10 caracteres
+    </div>
+    <!-- Descripción Producto -->
+    <div>
+        <label class="form-label">Descrición Producto</label>
+        <input type="text" class="form-control" placeholder="descripción producto" formControlName="description">
+    </div>
+    <div class="text-danger" *ngIf="form.get('description')!.dirty && form.get('description')!.errors">
+        Campo requerido, no puede superar los 200 caracteres
+    </div>
+    <!-- Imagen Producto -->
+    <div>
+        <label class="form-label">Url Producto</label>
+        <input type="text" class="form-control" placeholder="https://..." formControlName="image">
+    </div>
+    <div class="text-danger" *ngIf="form.get('image')!.dirty && form.get('image')!.errors">
+        Campo requerido, no puede superar los 200 caracteres
+    </div>
+    <!-- Categoría Producto -->
+    <div>
+        <label class="form-label">Categoría Producto</label>
+        <input type="text" class="form-control" placeholder="Ej.: electrónica" formControlName="category">
+    </div>
+    <div class="text-danger" *ngIf="form.get('category')!.dirty && form.get('category')!.errors">
+        Campo requerido, no puede superar los 40 caracteres
+    </div>
+    <!-- Precio Producto -->
+    <div>
+        <label class="form-label">Precio Producto ($)</label>
+        <input type="number" class="form-control" placeholder="1" formControlName="price">
+    </div>
+    <div class="text-danger" *ngIf="form.get('price')!.dirty && form.get('price')!.errors">
+        Campo requerido, Entre $1 - $10.000.000
+    </div>
+    <!-- Producto Activo? -->
+    <div>
+        <label class="form-label">Producto Activo?</label>
+        <select class="form-control" aria-label="Default select example" formControlName="activo">
+            <option [value]="valor.id" *ngFor="let valor of valoresActivo">{{valor.label}}</option>
+        </select>
+    </div>
+    <div class="text-danger" *ngIf="form.get('activo')!.dirty && form.get('activo')!.errors">
+        Campo requerido
+    </div>
+    <!-- Mostrar en ecommerce? -->
+    <div>
+        <label class="form-label">Mostrar en Ecommerce?</label>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" formControlName="mostrarPaginaCliente">
+            <label class="form-check-label" for="flexCheckDefault">
+              Si, mostrar en ecommerce
+            </label>
+        </div>
+    </div>
+    <div class="text-danger" *ngIf="form.get('mostrarPaginaCliente')!.dirty && form.get('mostrarPaginaCliente')!.errors">
+        Campo requerido
+    </div>
+    <!-- Producto Activo Otro? -->
+    <div>
+        <label class="form-label">Producto Activo Otro?</label>
+        <div class="form-check" *ngFor="let valor of valoresActivo">
+            <input class="form-check-input" type="radio" name="activoOtro" [value]="valor.id" formControlName="activoOtro">
+            <label class="form-check-label">
+                {{valor.label}}
+            </label>
+        </div>
+    </div>
+    <!-- Precio Por mayor -->
+    <label class="form-label">Precio x Mayor</label>
+    <!-- Button trigger modal -->
+    <div class="text-right mx-2 my-2">
+        <button type="button" class="btn btn-success mx-2" (click)="agregarPrecioMayor()">
+            Agregar Registro
+        </button>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-sm table-hover">
+            <thead>
+                <tr>
+                    <th>Cantidad Mín</th>
+                    <th>Nuevo Precio ($)</th>
+                </tr>
+            </thead>
+            <tbody formArrayName="preciosMayor">
+                <tr *ngFor="let row of precioMayorAsFormArray().controls; let i = index" [formGroupName]="i">
+                    <td>
+                        <input type="number" class="form-control" formControlName="cantidadMinima">
+                    </td>
+                    <td>
+                        <input type="number" class="form-control" formControlName="nuevoPrecio">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- <div>
+        <pre>{{ form.get('title')!.errors | json }}</pre>
+    </div> -->
+</form>
+
+<div class="d-grid gap-2 mt-4">
+    <button type="button" class="btn btn-primary btn-block" (click)="guardarProducto()" [disabled]="form.invalid || form.disabled">
+      <fa-icon [icon]="['fas', 'spinner']" [spin]="true" *ngIf="form.disabled"></fa-icon>
+      <span *ngIf="!form.disabled">Guardar</span>
+    </button>
+</div>
